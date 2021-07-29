@@ -15,7 +15,8 @@ trigger:
     - main
   paths:
     include:
-    - src/src/*
+    - docker/src/*
+    - docker/Dockerfile
 
 stages:
 - stage: build_docker
