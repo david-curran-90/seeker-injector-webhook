@@ -24,7 +24,7 @@ stages:
   jobs:
   - job: buildPackage 
     steps:
-    - bash: echo "##vso[task.setvariable variable=version]$(grep -m 1 'version' "charts/$(chart)/Chart.yaml" | cut -d ' ' -f2 | tr -d '\n')"
+    - bash: echo "##vso[task.setvariable variable=version]$(grep -m 1 'version' "$(System.DefaultWorkingDirectory)/charts/$(chart)/Chart.yaml" | cut -d ' ' -f2 | tr -d '\n')"
       displayName: 'getChartVersion'
     - bash: helm package charts/$(chart) -d $(System.DefaultWorkingDirectory) -u
       displayName: 'packageHelmChart'
