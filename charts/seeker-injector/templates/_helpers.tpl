@@ -24,4 +24,3 @@ Generate the image name
 {{- $imagetag := default "latest" .Values.image.tag -}}
 {{- printf "%s:%s" $repo $imagetag -}}
 {{- end -}}
-{{- end -}}

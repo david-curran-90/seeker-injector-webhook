@@ -22,6 +22,6 @@ deployment:
 
 image:
   repo: drfostercontainerreg.azurecr.io/dfi-seeker-injector 
-  tag: 
+  tag: ""
   pullSecrets:
   - name: drfostercontainerreg
