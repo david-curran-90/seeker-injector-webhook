@@ -24,7 +24,7 @@ metadata:
     {{ include "common.labels" . | nindent 4 }}
 subjects:
 - kind: ServiceAccount
-  name: {{ .Values.serviceaccount.name }}
+  name: {{ .Values.serviceAccount.name }}
   namespace: {{ .Values.namespace }}
   apiGroup: ""
 roleRef:
