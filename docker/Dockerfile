@@ -5,9 +5,9 @@ WORKDIR /usr/local/go/src/seeker-injector
 COPY src/ ./
 RUN go mod download && \
   go mod vendor && \
-  CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o / *.go
+  CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /seeker-injector *.go
 
 FROM scratch
 WORKDIR /app
-COPY --from=builder /write-backend .
-CMD ["./write-backend"]
+COPY --from=builder /seeker-injector .
+CMD ["./"]
