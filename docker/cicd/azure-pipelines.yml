@@ -53,9 +53,9 @@ stages:
         command: build
         Dockerfile: ./docker/Dockerfile
         tags: |
-          $(GitVersion.SemVer)-$(GitVersion.BuildMetaData)
+          $(GitVersion.SemVer)
     - bash: |
-        ./trivy drfostercontainerreg.azurecr.io/${{ parameters.image}}:$(GitVersion.SemVer)-$(GitVersion.BuildMetaData)
+        ./trivy drfostercontainerreg.azurecr.io/${{ parameters.image}}:$(GitVersion.SemVer)
       displayName: Run image secuirty scan
     - task: Docker@2
       displayName: Push an image
@@ -65,5 +65,5 @@ stages:
         command: push
         Dockerfile: ./docker/Dockerfile
         tags: |
-          $(GitVersion.SemVer)-$(GitVersion.BuildMetaData) 
+          $(GitVersion.SemVer) 
         
