@@ -15,3 +15,13 @@ Sets default annotations
 {{- define "common.annotations" -}}
 k8s.drfoster.co/webhook: {{ .Values.webhookName }}
 {{- end -}}
+
+{{/*
+Generate the image name
+*/}}
+{{- define "deployment.image" -}}
+{{- $repo := default "k8s-registry.dr-foster.lan" .Values.image.repo -}}
+{{- $imagetag := default "latest" .Values.image.tag -}}
+{{- printf "%s:%s" $repo $imagetag -}}
+{{- end -}}
+{{- end -}}

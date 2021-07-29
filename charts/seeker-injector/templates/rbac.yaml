@@ -24,8 +24,8 @@ metadata:
     {{ include "common.labels" . | nindent 4 }}
 subjects:
 - kind: ServiceAccount
-  name: {{ .Values.rbac.serviceaccount.name }}
-  namespace: {{.Values.namespace}}
+  name: {{ .Values.serviceaccount.name }}
+  namespace: {{ .Values.namespace }}
   apiGroup: ""
 roleRef:
   kind: ClusterRole

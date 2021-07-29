@@ -3,7 +3,7 @@
 kind: Secret
 apiVersion: v1
 metadata:
-  name: {{ .Values.deployment.name }}
+  name: {{ .Values.webhook.name }}
   namespace: {{ .Values.namespace }}
   labels:
     {{- include "common.labels" . | nindent 4 }}
@@ -15,7 +15,7 @@ data:
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
-  name: seeker-injector-webhook-config
+  name: {{ .Values.webhook.name }}
   labels:
     {{- include "common.labels" . | nindent 4 }}
   annotations:

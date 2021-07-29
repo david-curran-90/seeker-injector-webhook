@@ -11,10 +11,17 @@ webhook:
 rbac:
   enabled: true
   name: seeker-injector
-  serviceAccount:
-    create: true
-    name: seeker-injector
+
+serviceAccount:
+  create: true
+  name: seeker-injector
 
 deployment:
   name: seeker-injector
   replicas: 1
+
+image:
+  repo: drfostercontainerreg.azurecr.io/dfi-seeker-injector 
+  tag: 
+  pullSecrets:
+  - name: drfostercontainerreg
