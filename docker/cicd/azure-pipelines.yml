@@ -62,7 +62,7 @@ stages:
         containerRegistry: 'Azure Docker Registry'
         repository: ${{ parameters.image }}
         command: push
-        Dockerfile: ./Dockerfile
+        Dockerfile: ./docker/Dockerfile
         tags: |
           $(GitVersion.SemVer)-$(GitVersion.BuildMetaData) 
         
