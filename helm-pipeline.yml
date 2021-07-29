@@ -1,12 +1,6 @@
-parameters:
-- name: chart
-  displayName: Chart name
-  type: string
-  default: seeker-injector
-- name: pool
-  displayName: Build Pool
-  type: string
-  default: 'on-prem'
+variables:
+  chart: seeker-injector
+  pool: on-prem
 
 trigger:
   branches:
@@ -20,22 +14,22 @@ trigger:
 stages:
 - stage: buildHelmPackage
   pool:
-    name: ${{ parameters.pool }}
+    name: ${{ pool }}
   jobs:
   - job: buildPackage 
     steps:
-    - bash: echo "##vso[task.setvariable variable=version]$(grep -m 1 'version' "$(System.DefaultWorkingDirectory)/charts/$(parameters.chart)/Chart.yaml" | cut -d ' ' -f2 | tr -d '\n')"
+    - bash: echo "##vso[task.setvariable variable=version]$(grep -m 1 'version' "$(System.DefaultWorkingDirectory)/charts/$(chart)/Chart.yaml" | cut -d ' ' -f2 | tr -d '\n')"
       displayName: 'getChartVersion'
       #workingDirectory: charts/seeker-injector/
-    - bash: helm package charts/$(parameters.chart) -d $(System.DefaultWorkingDirectory) -u
+    - bash: helm package charts/$(chart) -d $(System.DefaultWorkingDirectory) -u
       displayName: 'packageHelmChart'
       #workingDirectory: charts/seeker-injector/
-    - publish: $(System.DefaultWorkingDirectory)/$(parameters.chart)-$(version).tgz
+    - publish: $(System.DefaultWorkingDirectory)/$(chart)-$(version).tgz
       artifact: seeker-injector
 
 - stage: pushHelmPackage
   pool:
-    name: ${{ parameters.pool }}
+    name: ${{ pool }}
   jobs:
   - job: pushPackage
     steps:
