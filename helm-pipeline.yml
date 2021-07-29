@@ -1,6 +1,8 @@
 variables:
-  chart: seeker-injector
-  pool: on-prem
+  - name: chart
+    value: seeker-injector
+  - name: pool
+    value: on-prem
 
 trigger:
   branches:
@@ -14,7 +16,7 @@ trigger:
 stages:
 - stage: buildHelmPackage
   pool:
-    name: ${{ pool }}
+    name: ${{ variables.pool }}
   jobs:
   - job: buildPackage 
     steps:
@@ -29,7 +31,7 @@ stages:
 
 - stage: pushHelmPackage
   pool:
-    name: ${{ pool }}
+    name: ${{ variables.pool }}
   jobs:
   - job: pushPackage
     steps:
