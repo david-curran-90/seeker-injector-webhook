@@ -1,0 +1,68 @@
+parameters:
+  - name: image
+    displayName: Docker image name
+    type: string
+    default: 'dfi-seeker-injector'
+  - name: trivy_version
+    displayName: Version of tirivy to install
+    type: string
+    default: 0.19.2
+
+trigger: 
+  branches:
+    include:
+    - dev
+    - main
+  paths:
+    include:
+    - src/src/*
+
+stages:
+- stage: build_docker
+  pool:
+    name: Azure Pipelines
+    vmImage: 'ubuntu-20.04'
+  jobs:
+  - job: build
+    steps:
+    - task: gittools.gittools.setup-gitversion-task.gitversion/setup@0
+      displayName: Setup GitVersion
+      inputs:
+        versionSpec: 5.x
+    - task: gittools.gittools.execute-gitversion-task.gitversion/execute@0
+      displayName: Calculate version
+      inputs:
+        configFilePath: GitVersion.yml
+    - bash: |
+        curl -L https://github.com/aquasecurity/trivy/releases/download/v"$TRIVY_VER"/trivy_"$TRIVY_VER"_Linux-64bit.tar.gz -o trivy.tar.gz
+        tar -zxf trivy.tar.gz
+        #cp trivy /home/vsts/.local/bin/trivy
+      displayName: Install Trivy
+      env:
+        TRIVY_VER: ${{ parameters.trivy_version }}
+    - task: DockerInstaller@0
+      displayName: 'Install Docker'
+      inputs:
+        dockerVersion: '19.03.2'
+    - task: Docker@2
+      displayName: Build an image
+      inputs:
+        containerRegistry: 'Azure Docker Registry'
+        repository: ${{ parameters.image }}
+        command: build
+        Dockerfile: ./Dockerfile
+        tags: |
+          $(GitVersion.SemVer)-$(GitVersion.BuildMetaData)
+    - bash: |
+        ./trivy drfostercontainerreg.azurecr.io/${{ parameters.image}}:$(GitVersion.SemVer)-$(GitVersion.BuildMetaData)
+      displayName: Run image secuirty scan
+    - task: Docker@2
+      displayName: Push an image
+      inputs:
+        containerRegistry: 'Azure Docker Registry'
+        repository: ${{ parameters.image }}
+        command: push
+        Dockerfile: ./Dockerfile
+        tags: |
+          $(GitVersion.SemVer)-$(GitVersion.BuildMetaData) 
+        

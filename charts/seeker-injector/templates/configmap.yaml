@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: 
+data:
+  sidecarconfig.yaml: |
+    containers:
+      - name: seeker
+        image: {{ .Values.image.repo }}
+        imagePullPolicy: IfNotPresent
