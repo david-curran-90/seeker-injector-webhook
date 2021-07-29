@@ -1,0 +1,20 @@
+namespace: seeker
+
+service: 
+  name: thuk-seeker-injector
+  port: 443
+
+webhook:
+  name: thuk-seeker-injector
+  timeoutSeconds: 5
+
+rbac:
+  enabled: true
+  name: seeker-injector
+  serviceAccount:
+    create: true
+    name: seeker-injector
+
+deployment:
+  name: seeker-injector
+  replicas: 1

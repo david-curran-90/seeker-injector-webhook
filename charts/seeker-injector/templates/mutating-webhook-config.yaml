@@ -3,7 +3,7 @@
 kind: Secret
 apiVersion: v1
 metadata:
-  name: seeker-injector-tls
+  name: {{ .Values.deployment.name }}
   namespace: {{ .Values.namespace }}
   labels:
     {{- include "common.labels" . | nindent 4 }}
@@ -29,11 +29,11 @@ webhooks:
     service:
       name: {{ .Values.service.name }}
       namespace: {{ .Values.namespace }}
-      path: /
-      port: 443
+      path: /mutate
+      port: {{ .Values.service.port }}
   failurePolicy: Ignore
   matchPolicy: Equivalent
-  name: {{ .Values.webhookName }}
+  name: {{ .Values.webhook.name }}
   rules:
   - apiGroups:
     - ""
@@ -46,3 +46,11 @@ webhooks:
     scope: "*"
   sideEffects: None
   timeoutSeconds: {{ .Values.webhook.timeoutSeconds }}
+  namespaceSelector:
+    matchExpressions:
+    - key: seeker.drfoster.co/inject
+      operator: NotIn
+      values:
+      - disabled
+    matchLabels:
+      seeker.drfoster.co/inject: enabled
