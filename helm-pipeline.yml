@@ -24,12 +24,14 @@ stages:
   jobs:
   - job: buildPackage 
     steps:
-    - bash: echo "##vso[task.setvariable variable=version]$(grep -m 1 'version' "$(System.DefaultWorkingDirectory)/charts/$(chart)/Chart.yaml" | cut -d ' ' -f2 | tr -d '\n')"
+    - bash: echo "##vso[task.setvariable variable=version]$(grep -m 1 'version' "$(System.DefaultWorkingDirectory)/charts/$(parameters.chart)/Chart.yaml" | cut -d ' ' -f2 | tr -d '\n')"
       displayName: 'getChartVersion'
-    - bash: helm package charts/$(chart) -d $(System.DefaultWorkingDirectory) -u
+      #workingDirectory: charts/seeker-injector/
+    - bash: helm package charts/$(parameters.chart) -d $(System.DefaultWorkingDirectory) -u
       displayName: 'packageHelmChart'
-    - publish: $(System.DefaultWorkingDirectory)/$(chart)-$(version).tgz
-      artifact: $(chart)
+      #workingDirectory: charts/seeker-injector/
+    - publish: $(System.DefaultWorkingDirectory)/$(parameters.chart)-$(version).tgz
+      artifact: seeker-injector
 
 - stage: pushHelmPackage
   pool:
