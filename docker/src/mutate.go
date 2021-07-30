@@ -48,8 +48,9 @@ type WhSvrParameters struct {
 }
 
 type Config struct {
-	Containers []corev1.Container `yaml:"containers"`
-	Volumes    []corev1.Volume    `yaml:"volumes"`
+	Containers   []corev1.Container   `yaml:"containers"`
+	Volumes      []corev1.Volume      `yaml:"volumes"`
+	VolumeMounts []corev1.VolumeMount `yaml:"volumeMounts"`
 }
 
 type patchOperation struct {
@@ -112,6 +113,53 @@ func mutationRequired(ignoredList []string, metadata *metav1.ObjectMeta) bool {
 	return required
 }
 
+// Adds the /data/seeker volume to the Pod
+func addVolume(target, added []corev1.Volume, basePath string) (patch []patchOperation) {
+	first := len(target) == 0
+	var value interface{}
+	for _, add := range added {
+		value = add
+		path := basePath
+		if first {
+			first = false
+			value = []corev1.Volume{add}
+		} else {
+			path = path + "/-"
+		}
+		patch = append(patch, patchOperation{
+			Op:    "add",
+			Path:  path,
+			Value: value,
+		})
+	}
+	return patch
+}
+
+// Adds the volume as mount to the existing container
+func addVolumeMount(target []corev1.Container, added []corev1.VolumeMount, basePath string) (patch []patchOperation) {
+    first := len(target) == 0
+	var value interface{}
+	for i := 0; i < len(target); i++ {
+		for _, add := range added {
+			value = add
+			path := fmt.Sprintf("%s/%d/VolumeMounts", basePath, i)
+			if first {
+				first = false
+				value = []corev1.VolumeMount{add}
+			} else {
+				path = path + "/-"
+			}
+			patch = append(patch, patchOperation{
+				Op:    "add",
+				Path:  path,
+				Value: value,
+			})
+		}
+	}
+	return patch
+}
+
+// Updates annotation to identify the pod as being injected
 func updateAnnotation(target map[string]string, added map[string]string) (patch []patchOperation) {
 	for key, value := range added {
 		if target == nil || target[key] == "" {
@@ -134,6 +182,7 @@ func updateAnnotation(target map[string]string, added map[string]string) (patch 
 	return patch
 }
 
+// Adds the seeker container
 func addContainer(target, added []corev1.Container, basePath string) (patch []patchOperation) {
 	first := len(target) == 0
 	var value interface{}
@@ -155,10 +204,12 @@ func addContainer(target, added []corev1.Container, basePath string) (patch []pa
 	return patch
 }
 
-// create mutation patch for resoures
+// Create mutation patch for resoures
 func createPatch(pod *corev1.Pod, sidecarConfig *Config, annotations map[string]string) ([]byte, error) {
 	var patch []patchOperation
 
+	patch = append(patch, addVolume(pod.Spec.Volumes, sidecarConfig.Volumes, "/spec/volumes")...)
+	patch = append(patch, addVolumeMount(pod.Spec.Containers, sidecarConfig.VolumeMounts, "/spec/containers")...)
 	patch = append(patch, addContainer(pod.Spec.Containers, sidecarConfig.Containers, "/spec/containers")...)
 	patch = append(patch, updateAnnotation(pod.Annotations, annotations)...)
 	return json.Marshal(patch)

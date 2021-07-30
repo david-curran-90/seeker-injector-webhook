@@ -8,3 +8,12 @@ data:
       - name: seeker
         image: {{ .Values.image.repo }}
         imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: seeker-dir
+          mountPath: /data/seeker
+    volumes:
+    - name: seeker-dir
+      emptyDir: {}
+    volumeMounts:
+    - name: seeker-dir
+      mountPath: /data/seeker
