@@ -22,8 +22,10 @@ spec:
         - name: {{ .Values.deployment.name }}
           image: {{ include "deployment.image" . }}
           imagePullPolicy: IfNotPresent
+          {{- if .Values.deployment.args }}
           args:
-            - -v=4
+            {{ toYaml .Values.deployment.args | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - name: webhook-certs
               mountPath: /etc/webhook/certs

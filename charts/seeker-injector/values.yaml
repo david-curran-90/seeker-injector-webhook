@@ -19,6 +19,7 @@ serviceAccount:
 deployment:
   name: seeker-injector
   replicas: 1
+  args: {}
 
 labels:
   owner: "KPE"
