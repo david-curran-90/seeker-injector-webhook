@@ -21,7 +21,7 @@ metadata:
   annotations:
     {{- include "common.annotations" . | nindent 4 }}
 webhooks:
-- name: {{ .Values.webhook.name }}
+- name: {{ .Values.webhook.name }}.drfoster.co
   admissionReviewVersions:
   - v1
   - v1beta1
