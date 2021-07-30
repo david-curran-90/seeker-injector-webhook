@@ -20,6 +20,9 @@ deployment:
   name: seeker-injector
   replicas: 1
 
+labels:
+  owner: "KPE"
+
 image:
   repo: drfostercontainerreg.azurecr.io/dfi-seeker-injector 
   tag: ""
