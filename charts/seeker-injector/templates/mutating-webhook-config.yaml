@@ -47,10 +47,5 @@ webhooks:
   sideEffects: None
   timeoutSeconds: {{ .Values.webhook.timeoutSeconds }}
   namespaceSelector:
-    matchExpressions:
-    - key: seeker.drfoster.co/inject
-      operator: NotIn
-      values:
-      - disabled
     matchLabels:
       seeker.drfoster.co/inject: enabled
