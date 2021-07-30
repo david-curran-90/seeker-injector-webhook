@@ -21,7 +21,8 @@ metadata:
   annotations:
     {{- include "common.annotations" . | nindent 4 }}
 webhooks:
-- admissionReviewVersions:
+- name: {{ .Values.webhook.name }}
+  admissionReviewVersions:
   - v1
   - v1beta1
   clientConfig:
@@ -33,11 +34,10 @@ webhooks:
       port: {{ .Values.service.port }}
   failurePolicy: Ignore
   matchPolicy: Equivalent
-  name: {{ .Values.webhook.name }}
   rules:
   - apiGroups:
     - ""
-    apiversions:
+    apiVersions:
     - v1
     operations:
     - CREATE

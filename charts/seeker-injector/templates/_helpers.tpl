@@ -13,7 +13,7 @@ k8s.drfoster.co/managed-by: "Helm"
 Sets default annotations
 */}}
 {{- define "common.annotations" -}}
-k8s.drfoster.co/webhook: {{ .Values.webhookName }}
+k8s.drfoster.co/webhook: {{ .Values.webhook.name }}
 {{- end -}}
 
 {{/*
