@@ -6,6 +6,9 @@ metadata:
     {{ include "common.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.deployment.replicas }}
+  selector:
+    matchLabels:
+      {{ include "common.labels" . | nindent 6 }}
   template:
     metadata:
       labels:
