@@ -25,7 +25,8 @@ spec:
           args:
             - -sidecarCfgFile=/etc/webhook/config/sidecarconfig.yaml
             - -tlsCertFile=/etc/webhook/certs/cert.pem
-            - -tlsKeyFile=/etc/webhook/certs/key.pem
+            - -tlsKeyFile=/etc/webhook/certs/key.pe
+            - -v=4
           volumeMounts:
             - name: webhook-certs
               mountPath: /etc/webhook/certs
