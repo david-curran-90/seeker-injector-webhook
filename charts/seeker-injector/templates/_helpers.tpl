@@ -31,5 +31,5 @@ Generate the sidecar image
 {{- define "sidecar.image" -}}
 {{- $repo := .Values.sidecar.repo -}}
 {{- $imagetag := .Values.sidecar.tag -}}
-{{ - pintf "%s:%s" $repo $imagetag -}}
+{{- pintf "%s:%s" $repo $imagetag -}}
 {{- end -}}
