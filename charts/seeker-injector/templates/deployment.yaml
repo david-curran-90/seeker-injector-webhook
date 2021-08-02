@@ -32,6 +32,9 @@ spec:
               readOnly: true
             - name: webhook-config
               mountPath: /etc/webhook/config
+          ports:
+            - containerPort: {{ .Values.deployment.port }}
+
       volumes:
         - name: webhook-certs
           secret:

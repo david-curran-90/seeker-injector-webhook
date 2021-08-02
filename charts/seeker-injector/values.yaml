@@ -20,6 +20,7 @@ deployment:
   name: seeker-injector
   replicas: 1
   args: {}
+  port: 443
 
 labels:
   owner: "KPE"
