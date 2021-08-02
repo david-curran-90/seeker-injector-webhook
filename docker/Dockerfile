@@ -10,4 +10,5 @@ RUN go mod download && \
 FROM scratch
 WORKDIR /app
 COPY --from=builder /seeker-injector .
+EXPOSE 443
 ENTRYPOINT ["./seeker-injector"]
