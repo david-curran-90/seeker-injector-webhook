@@ -81,7 +81,6 @@ func loadConfig(configFile string) (*Config, error) {
 
 // Check whether the target resoured need to be mutated
 func mutationRequired(ignoredList []string, metadata *metav1.ObjectMeta) bool {
-    fmt.Println(metadata)
 	// skip special kubernetes system namespaces
 	for _, namespace := range ignoredList {
 		if metadata.Namespace == namespace {
@@ -275,6 +274,7 @@ func (whsvr *WebhookServer) serve(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	fmt.Println(body)
 	// verify the content type is accurate
 	contentType := r.Header.Get("Content-Type")
 	if contentType != "application/json" {
