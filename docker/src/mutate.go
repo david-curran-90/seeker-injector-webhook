@@ -81,7 +81,7 @@ func loadConfig(configFile string) (*Config, error) {
 
 // Check whether the target resoured need to be mutated
 func mutationRequired(ignoredList []string, metadata *metav1.ObjectMeta) bool {
-	// skip special kubernete system namespaces
+	// skip special kubernetes system namespaces
 	for _, namespace := range ignoredList {
 		if metadata.Namespace == namespace {
 			glog.Infof("Skip mutation for %v for it's in special namespace:%v", metadata.Name, metadata.Namespace)
@@ -104,7 +104,7 @@ func mutationRequired(ignoredList []string, metadata *metav1.ObjectMeta) bool {
 		switch strings.ToLower(annotations[admissionWebhookAnnotationInjectKey]) {
 		default:
 			required = false
-		case "y", "yes", "true", "on":
+		case "enabled":
 			required = true
 		}
 	}
