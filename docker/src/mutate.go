@@ -217,7 +217,11 @@ func createPatch(pod *corev1.Pod, sidecarConfig *Config, annotations map[string]
 
 // main mutation process
 func (whsvr *WebhookServer) mutate(ar *v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
+	fmt.Println("AR:")
+    fmt.Println(ar)
 	req := ar.Request
+	fmt.Println("REQ:")
+	fmt.Println(req)
 	var pod corev1.Pod
 	if err := json.Unmarshal(req.Object.Raw, &pod); err != nil {
 		glog.Errorf("Could not unmarshal raw object: %v", err)
@@ -227,6 +231,8 @@ func (whsvr *WebhookServer) mutate(ar *v1beta1.AdmissionReview) *v1beta1.Admissi
 			},
 		}
 	}
+	fmt.Println("POD:")
+	fmt.Println(pod)
 
 	glog.Infof("AdmissionReview for Kind=%v, Namespace=%v Name=%v (%v) UID=%v patchOperation=%v UserInfo=%v",
 		req.Kind, req.Namespace, req.Name, pod.Name, req.UID, req.Operation, req.UserInfo)
@@ -274,7 +280,6 @@ func (whsvr *WebhookServer) serve(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println(body)
 	// verify the content type is accurate
 	contentType := r.Header.Get("Content-Type")
 	if contentType != "application/json" {
