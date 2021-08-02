@@ -142,7 +142,7 @@ func addVolumeMount(target []corev1.Container, added []corev1.VolumeMount, baseP
 	for i := 0; i < len(target); i++ {
 		for _, add := range added {
 			value = add
-			path := fmt.Sprintf("%s/%d/VolumeMounts", basePath, i)
+			path := fmt.Sprintf("%s/%d/volumeMounts", basePath, i)
 			if first {
 				first = false
 				value = []corev1.VolumeMount{add}
@@ -304,7 +304,7 @@ func (whsvr *WebhookServer) serve(w http.ResponseWriter, r *http.Request) {
 			admissionReview.Kind = ar.Kind
 		}
 	}
-	
+
 	resp, err := json.Marshal(admissionReview)
 	if err != nil {
 		glog.Errorf("Can't encode response: %v", err)
