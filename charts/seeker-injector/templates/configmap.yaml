@@ -6,7 +6,7 @@ data:
   sidecarconfig.yaml: |
     containers:
       - name: seeker
-        image: {{ .Values.image.repo }}
+        image: {{ include "sidecar.image" }}
         imagePullPolicy: IfNotPresent
         volumeMounts:
         - name: seeker-dir

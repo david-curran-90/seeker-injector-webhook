@@ -20,7 +20,16 @@ k8s.drfoster.co/webhook: {{ .Values.webhook.name }}
 Generate the image name
 */}}
 {{- define "deployment.image" -}}
-{{- $repo := default "k8s-registry.dr-foster.lan" .Values.image.repo -}}
-{{- $imagetag := default "latest" .Values.image.tag -}}
+{{- $repo := .Values.image.repo -}}
+{{- $imagetag := .Values.image.tag -}}
 {{- printf "%s:%s" $repo $imagetag -}}
+{{- end -}}
+
+{{/*
+Generate the sidecar image
+*/}}
+{{- define "sidecar.image" -}}
+{{- $repo := .Values.sidecar.repo -}}
+{{- $imagetag := .Values.sidecar.tag -}}
+{{ - pintf "%s:%s" $repo $imagetag -}}
 {{- end -}}

@@ -218,8 +218,6 @@ func createPatch(pod *corev1.Pod, sidecarConfig *Config, annotations map[string]
 // main mutation process
 func (whsvr *WebhookServer) mutate(ar *v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
 	req := ar.Request
-	fmt.Println("REQ:")
-	fmt.Println(req.Object.Raw)
 	var pod corev1.Pod
 	if err := json.Unmarshal(req.Object.Raw, &pod); err != nil {
 		glog.Errorf("Could not unmarshal raw object: %v", err)

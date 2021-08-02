@@ -16,6 +16,10 @@ serviceAccount:
   create: true
   name: seeker-injector
 
+sidecar:
+  repo: drfostercontainerreg.azurecr.io/seeker
+  tag: "0.1.0"
+
 deployment:
   name: seeker-injector
   replicas: 1
