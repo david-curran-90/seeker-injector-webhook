@@ -7,6 +7,6 @@ metadata:
 spec:
   ports:
   - port: {{ .Values.service.port }}
-    targetPort: {{ .Values.service.port }}
+    targetPort: {{ .Values.deployment.port }}
   selector:
     {{ include "common.labels" . | nindent 4 }}
