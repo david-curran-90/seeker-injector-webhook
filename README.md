@@ -56,7 +56,7 @@ spec:
         command: ["node", "-r", "/run/seeker/seeker", "index.js"]
 ```
 
-The application owner is responsible for configuring this, particularly including the annotation, environment variables and modifying the command.(note changing the command could also be achieved by editing the 'ENTRYPOINT' inside the Dockerfile). The location of the seeker module should not be changed as this is where the init container will copy the module to (i.e. always run `node -r /run/seeker/seeker`).
+The application owner is responsible for configuring this, particularly including the annotation, environment variables and modifying the command.(note changing the command could also be achieved by editing the 'ENTRYPOINT' inside the Dockerfile). The location of the seeker module should not be changed as this is where the init container will copy the module to (i.e. always run `node -r /run/seeker/seeker`). 
 
 ## Configuration
 

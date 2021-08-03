@@ -5,10 +5,9 @@ variables:
     value: on-prem
 
 trigger:
-  branches:
+  tags:
     include:
-    - dev
-    - main
+    - "v*"
   paths:
     include:
     - charts/*

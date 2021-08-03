@@ -9,10 +9,9 @@ parameters:
     default: 0.19.2
 
 trigger: 
-  branches:
+  tags:
     include:
-    - dev
-    - main
+    - "v*"
   paths:
     include:
     - docker/src/*
