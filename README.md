@@ -58,6 +58,13 @@ spec:
 
 The application owner is responsible for configuring this, particularly including the annotation, environment variables and modifying the command.(note changing the command could also be achieved by editing the 'ENTRYPOINT' inside the Dockerfile). The location of the seeker module should not be changed as this is where the init container will copy the module to (i.e. always run `node -r /run/seeker/seeker`). 
 
+Using the KPE provided Application Helm module (>=3.3.0)
+
+```yaml
+application:
+  seeker: enabled
+```
+
 ## Configuration
 
 The webhook is deployed using the Helm chart under `/charts`. This deploys the app, a webhook configuration, a secret containing the TLS certificate and a configMap containing the Kuberentes resources to be injected under the `sidecarcofnig.yaml` key
@@ -80,3 +87,7 @@ volumeMounts:
 ```
 
 Note the command of the initContainer will copy the seeker agent to `/run/seeker` which is added as a volume and mounted into all containers. Therefore the command to run inside the main container should load seeker from `/run/seeker/seeker`.
+
+## Known issues
+
+* Only works with NodeJS, No Java agent as yet.

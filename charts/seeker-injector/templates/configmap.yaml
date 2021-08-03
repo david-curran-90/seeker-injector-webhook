@@ -8,7 +8,7 @@ data:
       - name: seeker
         image: {{ include "sidecar.image" . }}
         imagePullPolicy: IfNotPresent
-        command: ["cp", "-r", "./seeker/node_modules/@synopsys-sig/seeker", "/run/seeker"]
+        command: ["cp", "-r", "$SEEKER_LOCATION", "/run/seeker"]
         volumeMounts:
         - name: seeker-dir
           mountPath: /run/seeker
@@ -17,4 +17,4 @@ data:
       emptyDir: {}
     volumeMounts:
     - name: seeker-dir
-      mountPath: /run/seeker
+      mountPath: /run/seeker    
