@@ -50,7 +50,7 @@ type WhSvrParameters struct {
 
 type Config struct {
 	Containers   []corev1.Container   `yaml:"containers"`
-	InitImage    map[string][string]  `yaml:"initImage"`
+	InitImage    map[string]string    `yaml:"initImage"`
 	Volumes      []corev1.Volume      `yaml:"volumes"`
 	VolumeMounts []corev1.VolumeMount `yaml:"volumeMounts"`
 }
