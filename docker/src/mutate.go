@@ -185,12 +185,17 @@ func updateAnnotation(target map[string]string, added map[string]string) (patch 
 }
 
 // Adds the seeker container
-func addContainer(target, added []corev1.Container, basePath string) (patch []patchOperation) {
+func addContainer(target, added []corev1.Container, basePath string, image, annotations map[string]string) (patch []patchOperation) {
 	first := len(target) == 0
 	var value interface{}
+
+	repo := image["repo"]
+	vers := image["version"]
+	tech := annotations[admissionWebhookAnnotationTechKey]
 	for _, add := range added {
 		value = add
 		path := basePath
+		add.Image = fmt.Sprintf("%s:%s-%s", repo, tech, vers)
 		if first {
 			first = false
 			value = []corev1.Container{add}
@@ -206,33 +211,13 @@ func addContainer(target, added []corev1.Container, basePath string) (patch []pa
 	return patch
 }
 
-// Computes what image to use for the initContainer
-func addInitImage(basePath string, added, annotations map[string]string) (patch []patchOperation) {
-	var value string
-	path := basePath
-	repo := added["repo"]
-	vers := added["version"]
-
-	tech := annotations[admissionWebhookAnnotationTechKey]
-
-	value = fmt.Sprintf("%s:%s-%s", repo, tech, vers)
-
-	patch = append(patch, patchOperation{
-		Op: "add",
-		Path: path,
-		Value: value,
-	})
-	return patch
-}
-
 // Create mutation patch for resoures
 func createPatch(pod *corev1.Pod, sidecarConfig *Config, annotations map[string]string) ([]byte, error) {
 	var patch []patchOperation
 
 	patch = append(patch, addVolume(pod.Spec.Volumes, sidecarConfig.Volumes, "/spec/volumes")...)
 	patch = append(patch, addVolumeMount(pod.Spec.Containers, sidecarConfig.VolumeMounts, "/spec/containers")...)
-	patch = append(patch, addContainer(pod.Spec.InitContainers, sidecarConfig.Containers, "/spec/initContainers")...)
-	patch = append(patch, addInitImage("/spec/initContainers/seeker/image", sidecarConfig.InitImage, annotations)...)
+	patch = append(patch, addContainer(pod.Spec.InitContainers, sidecarConfig.Containers, "/spec/initContainers", sidecarConfig.InitImage, annotations)...)
 	patch = append(patch, updateAnnotation(pod.Annotations, annotations)...)
 	return json.Marshal(patch)
 }
