@@ -6,7 +6,6 @@ data:
   sidecarconfig.yaml: |
     containers:
       - name: seeker
-        image: {{ include "sidecar.image" . }}
         imagePullPolicy: IfNotPresent
         command: ["cp", "-r", "$SEEKER_LOCATION", "/run/seeker"]
         volumeMounts:
@@ -17,4 +16,7 @@ data:
       emptyDir: {}
     volumeMounts:
     - name: seeker-dir
-      mountPath: /run/seeker    
+      mountPath: /run/seeker
+    initImage:
+      repo: {{ .Values.sidecar.repo }}
+      version: {{ .Values.sidecar.version }}

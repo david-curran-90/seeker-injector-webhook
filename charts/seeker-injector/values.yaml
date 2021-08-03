@@ -17,8 +17,8 @@ serviceAccount:
   name: seeker-injector
 
 sidecar:
-  repo: drfostercontainerreg.azurecr.io/seeker
-  tag: "0.1.0"
+  repo: drfostercontainerreg.azurecr.io/kpe-seeker
+  version: "0.2.2"
 
 deployment:
   name: seeker-injector
