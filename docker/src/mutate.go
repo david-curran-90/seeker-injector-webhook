@@ -217,7 +217,7 @@ func createPatch(pod *corev1.Pod, sidecarConfig *Config, annotations map[string]
 
 	patch = append(patch, addVolume(pod.Spec.Volumes, sidecarConfig.Volumes, "/spec/volumes")...)
 	patch = append(patch, addVolumeMount(pod.Spec.Containers, sidecarConfig.VolumeMounts, "/spec/containers")...)
-	patch = append(patch, addContainer(pod.Spec.InitContainers, sidecarConfig.Containers, "/spec/initContainers", sidecarConfig.InitImage, annotations)...)
+	patch = append(patch, addContainer(pod.Spec.InitContainers, sidecarConfig.Containers, "/spec/initContainers", sidecarConfig.InitImage, pod.Annotations)...)
 	patch = append(patch, updateAnnotation(pod.Annotations, annotations)...)
 	return json.Marshal(patch)
 }
