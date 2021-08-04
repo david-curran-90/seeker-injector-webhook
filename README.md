@@ -8,7 +8,7 @@ View write up on [Confluence](https://confluence.telstrahealth.com/display/DFIA/
 
 ## Usage
 
-To enable the webhook the Namespace requires a label and the pod an annotation `seeker.drfoster.co/inject: enabled`. View the below code block for a full example of a deployment using Seeker.
+To enable the webhook the Namespace requires a label and the pod an annotation `seeker.drfoster.co/inject: enabled`. Seeker supports multiple languages but each must run in a different way, we are supported NodeJS and DotNetCore currently as these are the main languages our apps are written in. Other languages can be supported in the future. View the below code block for a full example of a NodeJS deployment using Seeker.
 
 ```
 apiVersion: v1
@@ -33,6 +33,7 @@ spec:
     metadata:
       annotations:
         seeker.drfoster.co/inject: enabled
+        seeker.drfoster.co/tech: nodejs
       labels:
         app: nodejs
     spec:
@@ -63,6 +64,7 @@ Using the KPE provided Application Helm module (>=3.3.0)
 ```yaml
 application:
   seeker: enabled
+  seekerTech: nodejs
 ```
 
 ## Configuration
@@ -90,4 +92,23 @@ Note the command of the initContainer will copy the seeker agent to `/run/seeker
 
 ## Known issues
 
-* Only works with NodeJS, No Java agent as yet.
+* Only works with NodeJS and DotNetCore
+
+### No initContainer injected
+
+You may notice that the initContainer hasn't been injected. A few things to check:
+
+* Annotations have been applied to the Pod spec not the Deployment
+* Both annotations are present `seeker.drfoster.co/inject: enabled` and `seeker.drofster.co/tech: nodejs`
+
+If these are correct then check the logs of the seeker-injector pod
+
+```
+kubectl -n seeker logs -l helm.io/chart=seeker-injector -c seeker-injector
+```
+
+You may see `remote error: tls: bad certificate`, the fix is to restart the pod
+
+```
+kubectl -n seeker-testing rollout retart deploy seeker-injector
+```
