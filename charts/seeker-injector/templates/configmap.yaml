@@ -8,7 +8,7 @@ data:
       - name: seeker
         imagePullPolicy: IfNotPresent
         image: placeholder:replace
-        command: ["cp", "-r", "$SEEKER_LOCATION", "/run/seeker"]
+        command: ["cp", "-r", "/data/seeker/, "/run/seeker"]
         volumeMounts:
         - name: seeker-dir
           mountPath: /run/seeker
