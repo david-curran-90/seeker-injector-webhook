@@ -1,11 +1,16 @@
-FROM golang:1.16 as builder
+FROM drfostercontainerreg.azurecr.io/kpe-seeker:golang-0.2.4-ci.2 as builder
 
 WORKDIR /usr/local/go/src/seeker-injector
+
+ARG SEEKER_ACCESS_TOKEN
+ARG SEEKER_SERVER_URL
+ARG SEEKER_PROJECT_KEY  
+ARG SEEKER_AGENT_NAME
 
 COPY src/ ./
 RUN go mod download && \
   go mod vendor && \
-  CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /seeker-injector *.go
+  CGO_ENABLED=0 GOOS=linux seeker-agent go build -mod=vendor -o /seeker-injector *.go
 
 FROM scratch
 WORKDIR /app

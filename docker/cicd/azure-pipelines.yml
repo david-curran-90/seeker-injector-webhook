@@ -8,6 +8,12 @@ parameters:
     type: string
     default: 0.19.2
 
+variables:
+  - name: seeker_server_url
+    value: https://seeker.npd.telstrahealth.com:8096
+  - name: seeker_project_key
+    value: THUK-KPE-TEST
+
 trigger: 
   tags:
     include:
@@ -44,12 +50,19 @@ stages:
       displayName: 'Install Docker'
       inputs:
         dockerVersion: '19.03.2'
+    - task: AzureKeyVault@2
+      inputs:
+        azureSubscription: 'Azure Backend Storage'
+        KeyVaultName: 'kubernetes-secret-store'
+        SecretsFilter: 'seeker-project-token'
+        RunAsPreJob: false
     - task: Docker@2
       displayName: Build an image
       inputs:
         containerRegistry: 'Azure Docker Registry'
         repository: ${{ parameters.image }}
         command: build
+        arguments: --build-arg SEEKER_ACCESS_TOKEN=$(seeker-project-token) --build-arg SEEKER_SERVER_URL=${{ variables.seeker_server_url}} --build-arg SEEKER_PROJECT_KEY=${{ variables.seeker_project_key }} --build-arg SEEKER_AGENT_NAME=${{ parameters.image }}
         Dockerfile: ./docker/Dockerfile
         tags: |
           $(GitVersion.SemVer)
