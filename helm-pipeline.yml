@@ -30,7 +30,7 @@ stages:
     - publish: $(System.DefaultWorkingDirectory)/$(chart)-$(version).tgz
       artifact: seeker-injector
 
-- stage: pushHelmPackageAcr
+- stage: pushHelmPackageOci
   pool:
     name: Azure Pipelines
     vmImage: 'ubuntu-20.04'
@@ -58,6 +58,32 @@ stages:
     - bash: helm package -u charts/$(chart)
     - bash: helm registry login drfostercontainerreg.azurecr.io -u $(helm-registry-user-id) -p $(helm-registry-user-password)
     - bash: for i in $(chart)*.tgz ; do helm push "$i" oci://drfostercontainerreg.azurecr.io/helm; done
+
+- stage: pushHelmPackageAcr
+  pool:
+    name: ${{ variables.pool }}
+  jobs:
+  - job: pushPackage
+    steps:
+    - task: AzureKeyVault@2
+      inputs:
+        azureSubscription: 'Azure Backend Storage'
+        KeyVaultName: 'kubernetes-secret-store'
+        SecretsFilter: 'helm-registry-user-id'
+        RunAsPreJob: false
+    - task: AzureKeyVault@2
+      inputs:
+        azureSubscription: 'Azure Backend Storage'
+        KeyVaultName: 'kubernetes-secret-store'
+        SecretsFilter: 'helm-registry-user-password'
+        RunAsPreJob: false
+    - download: current
+      artifact: $(chart)
+    - bash: for p in $(System.DefaultWorkingDirectory)/../$(chart)/*.tgz; do helm push $p https://drfostercontainerreg.azurecr.io/helm/v1/repo -u $(helm-registry-user-id) -p $(helm-registry-user-password) ; done
+      displayName: 'pushPackage'
+    - bash: rm -rf $(System.DefaultWorkingDirectory)/../$(chart)
+      displayName: 'clearPackages'
+
 
 - stage: pushHelmPackage
   pool:
