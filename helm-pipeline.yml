@@ -44,7 +44,7 @@ stages:
     - download: current
       artifact: $(chart)
     - bash: helm package -u charts/$(chart)
-    - bash: for i in $(chart)*.tgz ; helm push "$i" oci://drfostercontainerreg.azurecr.io/helm; done
+    - bash: for i in $(chart)*.tgz ; do helm push "$i" oci://drfostercontainerreg.azurecr.io/helm; done
 
 - stage: pushHelmPackage
   pool:
