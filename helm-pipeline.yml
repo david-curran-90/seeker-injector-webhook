@@ -37,6 +37,18 @@ stages:
   jobs:
   - job: pushChartAcr
     steps:
+    - task: AzureKeyVault@2
+      inputs:
+        azureSubscription: 'Azure Backend Storage'
+        KeyVaultName: 'kubernetes-secret-store'
+        SecretsFilter: 'helm-registry-user-id'
+        RunAsPreJob: false
+    - task: AzureKeyVault@2
+      inputs:
+        azureSubscription: 'Azure Backend Storage'
+        KeyVaultName: 'kubernetes-secret-store'
+        SecretsFilter: 'helm-registry-user-password'
+        RunAsPreJob: false
     - task: HelmInstaller@0
       displayName: 'Install Helm 3.7.0'
       inputs:
@@ -44,6 +56,7 @@ stages:
     - download: current
       artifact: $(chart)
     - bash: helm package -u charts/$(chart)
+    - bash: helm helm registry login drfostercontainerreg.azurecr.io -u $(helm-registry-user-id) -p $(helm-registry-user-password)
     - bash: for i in $(chart)*.tgz ; do helm push "$i" oci://drfostercontainerreg.azurecr.io/helm; done
 
 - stage: pushHelmPackage
