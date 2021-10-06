@@ -56,7 +56,7 @@ stages:
     - download: current
       artifact: $(chart)
     - bash: helm package -u charts/$(chart)
-    - bash: helm helm registry login drfostercontainerreg.azurecr.io -u $(helm-registry-user-id) -p $(helm-registry-user-password)
+    - bash: helm registry login drfostercontainerreg.azurecr.io -u $(helm-registry-user-id) -p $(helm-registry-user-password)
     - bash: for i in $(chart)*.tgz ; do helm push "$i" oci://drfostercontainerreg.azurecr.io/helm; done
 
 - stage: pushHelmPackage
