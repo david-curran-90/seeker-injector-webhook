@@ -33,19 +33,15 @@ stages:
     name: Azure Pipelines
     vmImage: 'ubuntu-20.04'
   jobs:
-  - job: installHelm
+  - job: pushChartAcr
     steps:
     - task: HelmInstaller@0
       displayName: 'Install Helm 3.7.0'
       inputs:
         helmVersion: 3.7.0
-  - job: saveLocalChart
-    steps:
     - download: current
       artifact: $(chart)
     - bash: HELM_EXPERIMENTAL_OCI=1 helm chart save . drfostercontainerreg.azurecr.io/helm/$(chart)
-  - job: pushLocalChart
-    steps:
     - bash: drfostercontainerreg.azurecr.io/helm/$(chart)
 
 - stage: pushHelmPackage
