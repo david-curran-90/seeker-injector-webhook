@@ -42,7 +42,7 @@ stages:
   - job: saveLocalChart
     steps:
     - download: current
-      artfiact: $(chart)
+      artifact: $(chart)
     - bash: HELM_EXPERIMENTAL_OCI=1 helm chart save . drfostercontainerreg.azurecr.io/helm/$(chart)
   - job: pushLocalChart
     steps:
