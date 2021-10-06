@@ -43,8 +43,8 @@ stages:
         helmVersion: 3.7.0
     - download: current
       artifact: $(chart)
-    - bash: helm package -u charts/$(chart) -d $(chart).tgz
-    - bash: helm push $(chart) drfostercontainerreg.azurecr.io/helm
+    - bash: helm package -u charts/$(chart)
+    - bash: for i in *.tgz ; helm push "$i" oci://drfostercontainerreg.azurecr.io/helm; done
 
 - stage: pushHelmPackage
   pool:
