@@ -42,7 +42,7 @@ stages:
     - download: current
       artifact: $(chart)
     - bash: export HELM_EXPERIMENTAL_OCI=1
-    - bash: helm chart save . drfostercontainerreg.azurecr.io/helm/$(chart)
+    - bash: helm version && echo $HELM_EXPERIMENTAL_OCI && helm chart save . drfostercontainerreg.azurecr.io/helm/$(chart)
     - bash: drfostercontainerreg.azurecr.io/helm/$(chart)
 
 - stage: pushHelmPackage
