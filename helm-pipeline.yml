@@ -42,8 +42,8 @@ stages:
     - download: current
       artifact: $(chart)
     - bash: export HELM_EXPERIMENTAL_OCI=1
-    - bash: helm package charts/$(chart) drfostercontainerreg.azurecr.io/helm/$(chart)
-    - bash: helm push drfostercontainerreg.azurecr.io/helm/$(chart)
+    - bash: helm package charts/$(chart)
+    - bash: helm push $(chart) drfostercontainerreg.azurecr.io/helm
 
 - stage: pushHelmPackage
   pool:
