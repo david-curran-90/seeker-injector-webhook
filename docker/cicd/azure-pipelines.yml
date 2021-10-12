@@ -13,7 +13,7 @@ resources:
     type: git
     name: Kubernetes/kpe-base-pipelines
 
-jobs:
+stages:
 - template: docker/standard-build-ap.yml@templates
   parameters:
     docker_image: 'kpe-seeker-injector'
