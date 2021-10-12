@@ -17,3 +17,4 @@ extends:
   template: docker/standard-build-ap.yml@templates
   parameters:
     docker_image: 'kpe-seeker-injector'
+    docker_file: 'docker/Dockerfile'
