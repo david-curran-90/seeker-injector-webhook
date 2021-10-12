@@ -17,4 +17,3 @@ jobs:
 - template: docker/standard-build-ap.yml@templates
   parameters:
     docker_image: 'kpe-seeker-injector'
-    seeker_tech: 'golang'
