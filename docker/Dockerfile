@@ -7,10 +7,10 @@ ARG SEEKER_SERVER_URL
 ARG SEEKER_PROJECT_KEY  
 ARG SEEKER_AGENT_NAME
 
-COPY src/ ./
+COPY src/*.go ./
 RUN go mod download && \
   go mod vendor && \
-  CGO_ENABLED=0 GOOS=linux seeker-agent go build -mod=vendor -o /seeker-injector *.go
+  CGO_ENABLED=0 GOOS=linux seeker-agent go build -mod=vendor -o /seeker-injector
 
 FROM scratch
 WORKDIR /app
