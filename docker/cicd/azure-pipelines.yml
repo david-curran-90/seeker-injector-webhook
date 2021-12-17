@@ -18,3 +18,4 @@ extends:
   parameters:
     docker_image: 'kpe-seeker-injector'
     docker_file: 'docker/Dockerfile'
+    seeker_enabled: "false"
