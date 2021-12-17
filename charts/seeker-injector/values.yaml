@@ -18,7 +18,7 @@ serviceAccount:
 
 sidecar:
   repo: drfostercontainerreg.azurecr.io/kpe-seeker
-  version: "0.2.2"
+  version: "0.2.4-ci.4"
 
 deployment:
   name: seeker-injector
@@ -30,7 +30,7 @@ labels:
   owner: "KPE"
 
 image:
-  repo: drfostercontainerreg.azurecr.io/dfi-seeker-injector 
-  tag: ""
+  repo: drfostercontainerreg.azurecr.io/kpe-seeker-injector 
+  tag: "2.2.0-alpha.32"
   pullSecrets:
   - name: drfostercontainerreg

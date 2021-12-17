@@ -193,7 +193,7 @@ func addContainer(target, added []corev1.Container, basePath string, image, anno
 	vers := image["version"]
 	tech := annotations[admissionWebhookAnnotationTechKey]
 	for _, add := range added {
-		add.Image = fmt.Sprintf("%s:%s-%s", repo, tech, vers)
+		add.Image = fmt.Sprintf("%s-base-%s:%s", repo, tech, vers)
 		value = add
 		path := basePath
 		if first {
