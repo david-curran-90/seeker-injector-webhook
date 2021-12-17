@@ -1,4 +1,4 @@
-FROM drfostercontainerreg.azurecr.io/kpe-seeker-base-golang:0.2.4-ci.4 as builder
+FROM drfostercontainerreg.azurecr.io/kpe-seeker-base-golang:0.2.5 as builder
 
 WORKDIR /usr/local/go/src/seeker-injector
 
