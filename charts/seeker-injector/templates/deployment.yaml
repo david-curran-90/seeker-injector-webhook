@@ -21,7 +21,7 @@ spec:
       containers:
         - name: {{ .Values.deployment.name }}
           image: {{ include "deployment.image" . }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: {{ .Values.image.imagePullPolicy}}
           {{- if .Values.deployment.args }}
           args:
             {{ toYaml .Values.deployment.args | nindent 12 }}

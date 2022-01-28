@@ -1,11 +1,13 @@
 namespace: seeker
+annotations: {}
+labels: {}
 
 service: 
-  name: thuk-seeker-injector
+  name: seeker-injector
   port: 443
 
 webhook:
-  name: thuk-seeker-injector
+  name: seeker-injector
   timeoutSeconds: 5
 
 rbac:
@@ -17,8 +19,11 @@ serviceAccount:
   name: seeker-injector
 
 sidecar:
-  repo: drfostercontainerreg.azurecr.io/kpe-seeker
-  version: "0.2.4-ci.4"
+  registry: ""
+  repo: ""
+  version: ""
+  imagePullSecrets: {}
+  imagePullPolicy: IfNotPresent
 
 deployment:
   name: seeker-injector
@@ -26,11 +31,9 @@ deployment:
   args: {}
   port: 8443
 
-labels:
-  owner: "KPE"
-
 image:
-  repo: drfostercontainerreg.azurecr.io/kpe-seeker-injector 
-  tag: "2.2.0-alpha.32"
-  pullSecrets:
-  - name: drfostercontainerreg
+  registry: ""
+  repo: "" 
+  tag: ""
+  imagePullSecrets: {}
+  imagePullPolicy: IfNotPresent

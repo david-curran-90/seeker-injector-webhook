@@ -30,9 +30,9 @@ var ignoredNamespaces = []string{
 }
 
 const (
-	admissionWebhookAnnotationInjectKey = "seeker.drfoster.co/inject"
-	admissionWebhookAnnotationTechKey = "seeker.drfoster.co/tech"
-	admissionWebhookAnnotationStatusKey = "seeker.drfoster.co/status" 
+	admissionWebhookAnnotationInjectKey = "seeker.injector/enabled"
+	admissionWebhookAnnotationTechKey = "seeker.injector/tech"
+	admissionWebhookAnnotationStatusKey = "seeker.injector/status" 
 )
 
 type WebhookServer struct {
@@ -191,9 +191,10 @@ func addContainer(target, added []corev1.Container, basePath string, image, anno
 
 	repo := image["repo"]
 	vers := image["version"]
+	reg := image["registry"]
 	tech := annotations[admissionWebhookAnnotationTechKey]
 	for _, add := range added {
-		add.Image = fmt.Sprintf("%s-base-%s:%s", repo, tech, vers)
+		add.Image = fmt.Sprintf("%s/%s-%s:%s", reg, repo, tech, vers)
 		value = add
 		path := basePath
 		if first {

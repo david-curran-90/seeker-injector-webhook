@@ -19,5 +19,6 @@ data:
     - name: seeker-dir
       mountPath: /run/seeker
     initImage:
+      registry: {{ .Values.sidecar.registry }}
       repo: {{ .Values.sidecar.repo }}
       version: {{ .Values.sidecar.version }}

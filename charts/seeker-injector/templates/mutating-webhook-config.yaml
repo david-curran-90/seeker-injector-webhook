@@ -21,7 +21,7 @@ metadata:
   annotations:
     {{- include "common.annotations" . | nindent 4 }}
 webhooks:
-- name: {{ .Values.webhook.name }}.drfoster.co
+- name: {{ .Values.webhook.name }}
   admissionReviewVersions:
   - v1
   - v1beta1
@@ -48,4 +48,4 @@ webhooks:
   timeoutSeconds: {{ .Values.webhook.timeoutSeconds }}
   namespaceSelector:
     matchLabels:
-      seeker.drfoster.co/inject: enabled
+      seeker.injector/enabled: true

@@ -5,15 +5,19 @@ Sets the default labels
 helm.io/chart: {{ .Chart.Name | quote }}
 helm.io/heritage: {{ .Release.Service | quote }}
 helm.io/release: {{ .Release.Name | quote }}
-k8s.drfoster.co/owner: {{ default "KPE" .Values.labels.owner | quote }}
-k8s.drfoster.co/managed-by: "Helm"
+{{- if .Values.labels -}}
+{{ .Values.labels | toYaml }}
+{{- end -}}
 {{- end -}}
 
 {{/*
 Sets default annotations
 */}}
 {{- define "common.annotations" -}}
-k8s.drfoster.co/webhook: {{ .Values.webhook.name }}
+seeker.injector/webhook: {{ .Values.webhook.name }}
+{{- if .Values.annotations -}}
+{{ .Values.annotations | toYaml }}
+{{- end -}}
 {{- end -}}
 
 {{/*
